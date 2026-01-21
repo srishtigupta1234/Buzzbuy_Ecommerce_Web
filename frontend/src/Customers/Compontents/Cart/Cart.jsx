@@ -8,25 +8,26 @@ import { getCart } from "../../../State/Cart/Action";
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-const cart = useSelector((state) => state.cart);
-
-useEffect(() => {
-  dispatch(getCart());
-}, [dispatch]);
-
-const handleCheckOut = () => {
-  navigate("/checkout?step=2");
-};
+ const { cart } = useSelector(state => state.cart);
 
 
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
+
+
+
+  const handleCheckOut = () => {
+    navigate("/checkout?step=2");
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen pb-10">
       <div className="lg:grid grid-cols-3 lg:px-16 px-4 pt-10 relative gap-5">
         {/* Left Side: Cart Items */}
         <div className="col-span-2 space-y-4">
-        {cart.cart?.cartItems?.map((item) => (
-            <CartItem key={item.id} item={item} />   
+          {cart?.cartItems.map((item) => (
+            <CartItem key={item.id} item={item} />
           ))}
         </div>
 
@@ -40,15 +41,15 @@ const handleCheckOut = () => {
 
             <div className="space-y-4 font-medium mt-5">
               <div className="flex justify-between text-gray-700">
-                <span>Price ({cart.cart?.totalItem} items)</span>
+                <span>Price ({cart?.totalItem} items)</span>
                 {/* Display calculated Total */}
-                <span>${cart.cart?.totalPrice}</span>
+                <span>${cart?.totalPrice}</span>
               </div>
 
               <div className="flex justify-between text-gray-700">
                 <span>Discount</span>
                 {/* Display calculated Discount */}
-                <span className="text-green-600">-₹{cart.cart?.discount}</span>
+                <span className="text-green-600">-₹{cart?.discount}</span>
               </div>
 
               <div className="flex justify-between text-gray-700">
@@ -61,7 +62,10 @@ const handleCheckOut = () => {
               <div className="flex justify-between text-lg font-bold text-gray-900">
                 <span>Total Amount</span>
                 {/* Display calculated Final Price */}
-                <span className="text-[#9155fd]"> ₹{cart.cart?.totalDiscountedPrice}</span>
+                <span className="text-[#9155fd]">
+                  {" "}
+                  ₹{cart?.totalDiscountedPrice}
+                </span>
               </div>
             </div>
 
@@ -83,7 +87,7 @@ const handleCheckOut = () => {
             </Button>
 
             <p className="text-xs text-green-600 font-semibold mt-4 text-center">
-              You will save ${cart.cart?.discount} on this order
+              You will save ${cart?.discount} on this order
             </p>
           </div>
         </div>

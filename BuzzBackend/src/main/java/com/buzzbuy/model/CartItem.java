@@ -28,14 +28,14 @@ public class CartItem {
 
     private String size;
 
-    @Column(nullable = false)
-    private Integer quantity=1;
+    @Column(nullable = false, name = "quantity")
+    private int quantity;
 
     @Column(nullable = false)
-    private Integer price = 0;
+    private Integer price;
 
     @Column(nullable = false)
-    private Integer discountedPrice = 0;
+    private Integer discountedPrice;
 
     @Column(nullable = false)
     private Long userId;
@@ -73,11 +73,11 @@ public class CartItem {
 		this.size = size;
 	}
 
-	public Integer getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
@@ -109,7 +109,7 @@ public class CartItem {
 	public CartItem() {
 		super();
 	}
-	public CartItem(Long id, Cart cart, Product product, String size, Integer quantity, Integer price,
+	public CartItem(Long id, Cart cart, Product product, String size, int quantity, Integer price,
 			Integer discountedPrice, Long userId) {
 		super();
 		this.id = id;
