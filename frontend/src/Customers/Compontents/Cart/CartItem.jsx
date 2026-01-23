@@ -4,24 +4,26 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
-import { removeCartItem, updateCartItem } from "../../../State/Cart/Action";
+import { getCart, removeCartItem, updateCartItem } from "../../../State/Cart/Action";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
-  const handleRemoveCartItem = () => {
-    dispatch(removeCartItem(item.id));
+  const handleRemoveCartItem = async() => {
+    await dispatch(removeCartItem(item.id));
+    dispatch(getCart());
   };
-  const handleUpdateCartItem = (newQty) => {
+  const handleUpdateCartItem = async(newQty) => {
     if (newQty < 1) return;
     console.log(newQty);
     
-    dispatch(
+    await dispatch(
       updateCartItem({
         cartItemId: item.id,
         data: { quantity: newQty },
       }),
     );
+    dispatch(getCart());
   };
 
   return (
