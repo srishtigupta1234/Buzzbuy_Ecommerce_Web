@@ -14,12 +14,15 @@ import com.buzzbuy.exception.CartItemException;
 import com.buzzbuy.exception.UserException;
 import com.buzzbuy.model.CartItem;
 import com.buzzbuy.model.User;
+import com.buzzbuy.request.UpdateCartItemRequest;
 import com.buzzbuy.response.ApiResponse;
 import com.buzzbuy.service.CartItemService;
 import com.buzzbuy.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/cart_items")
@@ -49,13 +52,26 @@ public class CartItemController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
     
-    @PutMapping("/{cartItemId}")
-    @Operation(description="Updated Item added to cart")
-    public ResponseEntity<CartItem> updateCartItem(@RequestBody CartItem cartItem, @PathVariable Long cartItemId, @RequestHeader("Authorization") String jwt) throws UserException, CartItemException{
     
-    	User user = userService.findUserProfileByJwt(jwt);
-    	CartItem updatedCartItem = cartItemService.updateCartItem(user.getId(), cartItemId, cartItem);
-    	System.out.println("cartItem"+ cartItem);
-    	return new ResponseEntity<>(updatedCartItem, HttpStatus.OK);
+    @PutMapping("/{cartItemId}")
+    @Operation(description = "Update item quantity in cart")
+    public ResponseEntity<CartItem> updateCartItem(
+            @RequestBody UpdateCartItemRequest cartItemRequest,
+            @PathVariable Long cartItemId,
+            @RequestHeader("Authorization") String jwt
+    ) throws UserException, CartItemException {
+
+        // Find user from JWT
+        User user = userService.findUserProfileByJwt(jwt);
+
+        // Call service to update
+        CartItem updatedCartItem = cartItemService.updateCartItem(
+                user.getId(), cartItemId, cartItemRequest
+        );
+
+        System.out.println("CartItem qty: " + cartItemRequest.getQuantity());
+
+        return new ResponseEntity<>(updatedCartItem, HttpStatus.OK);
     }
+
 }

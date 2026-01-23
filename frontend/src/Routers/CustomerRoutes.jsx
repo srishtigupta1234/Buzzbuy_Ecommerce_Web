@@ -10,6 +10,7 @@ import Checkout from "../Customers/Compontents/Checkout/Checkout";
 import Order from "../Customers/Compontents/Order/Order";
 import OrderDetail from "../Customers/Compontents/Order/OrderDetail"
 import ProductSearchPage from "../Customers/Compontents/ProductSearchPage/ProductSearchPage";
+import PaymentSuccess from "../Customers/Compontents/Payment/PaymentSuccess";
 const CustomerRoutes = () => {
   return (
     <div>
@@ -25,7 +26,7 @@ const CustomerRoutes = () => {
            <Route path='/account/order' element={<Order/>}></Route>
            <Route path='/account/order/:orderId' element={<OrderDetail/>}></Route>
            <Route path="/products" element={<ProductSearchPage/>}></Route>
-
+            <Route path='/payment/:orderId' element={<PaymentSuccess/>}></Route>
 
       </Routes>
       <div><Footer/></div>

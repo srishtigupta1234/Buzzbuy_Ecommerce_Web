@@ -28,14 +28,14 @@ public class CartItem {
 
     private String size;
 
-    @Column(nullable = false)
-    private Integer quantity=1;
+    @Column(nullable = false, name = "quantity")
+    private Integer quantity;
 
     @Column(nullable = false)
-    private Integer price = 0;
+    private Integer price;
 
     @Column(nullable = false)
-    private Integer discountedPrice = 0;
+    private Integer discountedPrice;
 
     @Column(nullable = false)
     private Long userId;

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrderById } from "../../../State/Order/Action";
 import { useLocation } from "react-router-dom";
 import CartItem from "../Cart/CartItem";
+import { createPayment } from "../../../State/Payment/Action";
 
 const OrderSummary = () => {
     const dispatch = useDispatch();
@@ -16,6 +17,10 @@ const OrderSummary = () => {
     useEffect(()=>{
        dispatch(getOrderById(orderId)); 
     },[orderId])
+
+    const handleCheckout = () =>{
+      dispatch(createPayment(orderId));
+    }
 
   return (
     <div>
@@ -77,6 +82,7 @@ const OrderSummary = () => {
                 textTransform: "none",
                 "&:hover": { bgcolor: "#7c3aed" }
               }}
+              onClick={handleCheckout}
             >
               Checkout
             </Button>

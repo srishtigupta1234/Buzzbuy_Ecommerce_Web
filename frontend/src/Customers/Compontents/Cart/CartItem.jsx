@@ -4,31 +4,26 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
-import { removeCartItem, updateCartItem } from "../../../State/Cart/Action";
+import { getCart, removeCartItem, updateCartItem } from "../../../State/Cart/Action";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
-  const handleRemoveCartItem = () => {
-    dispatch(removeCartItem(item.id));
+  const handleRemoveCartItem = async() => {
+    await dispatch(removeCartItem(item.id));
+    dispatch(getCart());
   };
-  const handleIncreaseCartItem = (num) => {
-    const updatedQuantity = item.quantity + num;
-    dispatch(
+  const handleUpdateCartItem = async(newQty) => {
+    if (newQty < 1) return;
+    console.log(newQty);
+    
+    await dispatch(
       updateCartItem({
         cartItemId: item.id,
-        data: { quantity: updatedQuantity } 
-      })
+        data: { quantity: newQty },
+      }),
     );
-  };
-  const handleDecreaseCartItem = (num) => {
-    const updatedQuantity = item.quantity + num;
-    dispatch(
-      updateCartItem({
-        cartItemId: item.id,
-        data: { quantity: updatedQuantity } 
-      })
-    );
+    dispatch(getCart());
   };
 
   return (
@@ -72,25 +67,24 @@ const CartItem = ({ item }) => {
       <div className="flex items-center justify-between lg:justify-start lg:space-x-10 pt-4 mt-4 border-t border-gray-50">
         <div className="flex items-center space-x-1">
           <IconButton
-            sx={{ color: "#9155fd", "&:hover": { bgcolor: "#f5f3ff" } }}
+            sx={{ color: "#9155fd" }}
             size="small"
             disabled={item.quantity <= 1}
-            onClick={() => handleDecreaseCartItem()}
           >
-            <RemoveCircleOutlineIcon fontSize="medium" />
+            <RemoveCircleOutlineIcon
+              fontSize="medium"
+              onClick={() => handleUpdateCartItem(item?.quantity - 1)}
+            />
           </IconButton>
 
           <span className="w-10 text-center font-semibold text-gray-700 select-none">
             {item.quantity}
           </span>
-
-          <IconButton
-            sx={{ color: "#9155fd", "&:hover": { bgcolor: "#f5f3ff" } }}
-            size="small"
-            disabled={item.quantity >= item?.product.qunatity} // Disables at 30
-            onClick={() => handleIncreaseCartItem(1)}
-          >
-            <AddCircleOutlineIcon fontSize="medium" />
+          <IconButton sx={{ color: "#9155fd" }} size="small">
+            <AddCircleOutlineIcon
+              fontSize="medium"
+              onClick={() => handleUpdateCartItem(item?.quantity + 1)}
+            />
           </IconButton>
         </div>
 
@@ -104,7 +98,7 @@ const CartItem = ({ item }) => {
               letterSpacing: "0.5px",
               "&:hover": { bgcolor: "transparent", color: "#7c3aed" },
             }}
-            onClick={()=>handleRemoveCartItem(-1)}
+            onClick={() => handleRemoveCartItem()}
           >
             Remove
           </Button>
