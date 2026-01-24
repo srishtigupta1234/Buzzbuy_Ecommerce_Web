@@ -1,108 +1,120 @@
 import React from "react";
-import IconButton from "@mui/material/IconButton";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import Button from "@mui/material/Button";
+import { IconButton, Button } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { useDispatch } from "react-redux";
 import { getCart, removeCartItem, updateCartItem } from "../../../State/Cart/Action";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
-  const handleRemoveCartItem = async() => {
+  const handleRemoveCartItem = async () => {
     await dispatch(removeCartItem(item.id));
     dispatch(getCart());
   };
-  const handleUpdateCartItem = async(newQty) => {
+
+  const handleUpdateCartItem = async (newQty) => {
     if (newQty < 1) return;
-    console.log(newQty);
-    
     await dispatch(
       updateCartItem({
         cartItemId: item.id,
         data: { quantity: newQty },
-      }),
+      })
     );
     dispatch(getCart());
   };
 
   return (
-    <div className="p-5 shadow-sm border border-gray-400 rounded-lg hover:shadow-md transition-all duration-300 bg-white">
-      <div className="flex items-center">
+    <div className="group p-4 sm:p-6 shadow-sm border border-gray-200 rounded-xl bg-white hover:shadow-lg transition-all duration-300 relative">
+      
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        
         {/* Product Image */}
-        <div className="w-24 h-24 lg:w-32 lg:h-32 shrink-0">
+        <div className="w-full sm:w-32 h-32 shrink-0 overflow-hidden rounded-lg bg-gray-100 relative">
           <img
-            className="w-full h-full object-cover object-top rounded-md border border-gray-100"
+            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
             src={item.product?.imageUrl || "https://via.placeholder.com/150"}
-            alt={item.product?.title || "Product"}
+            alt={item.product?.title}
           />
         </div>
 
         {/* Product Details */}
-        <div className="ml-5 space-y-1 flex-1">
-          <p className="font-bold text-gray-800 lg:text-base line-clamp-1">
-            {item.product?.title}
-          </p>
-          <p className="text-sm font-medium text-gray-500">Size: {item.size}</p>
-          <p className="text-sm text-gray-400">Seller: {item.product?.brand}</p>
+        <div className="flex-1 w-full space-y-2">
+          <div className="flex justify-between items-start">
+            <div className="space-y-1">
+              <p className="font-bold text-gray-900 text-lg leading-tight line-clamp-2">
+                {item.product?.title}
+              </p>
+              <div className="flex items-center gap-3 text-sm text-gray-500 font-medium">
+                <p className="px-2 py-0.5 bg-gray-50 border border-gray-100 rounded text-gray-600">
+                  Size: {item.size}
+                </p>
+                <p>•</p>
+                <p className="text-gray-400">{item.product?.brand}</p>
+              </div>
+            </div>
+          </div>
 
-          {/* Pricing Section */}
-          <div className="flex items-center gap-3 mt-3">
-            <span className="text-lg font-black text-gray-900">
-              ${item.product?.discountedPrice}
+          {/* Pricing */}
+          <div className="flex items-end gap-3 pt-2">
+            <span className="text-xl font-bold text-gray-900">
+              ₹{item.product?.discountedPrice}
             </span>
-            <span className="line-through text-gray-400 text-sm">
-              ${item.product?.price}
+            <span className="line-through text-gray-400 text-sm mb-1">
+              ₹{item.product?.price}
             </span>
             {item?.discount > 0 && (
-              <span className="text-green-600 font-bold text-sm tracking-tight">
-                {item?.discount}% Off
+              <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded text-xs font-bold mb-1">
+                {item?.discount}% OFF
               </span>
             )}
           </div>
         </div>
       </div>
 
+      <hr className="my-4 border-gray-100" />
+
       {/* Controls Section */}
-      <div className="flex items-center justify-between lg:justify-start lg:space-x-10 pt-4 mt-4 border-t border-gray-50">
-        <div className="flex items-center space-x-1">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        
+        {/* Quantity Stepper */}
+        <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-1 py-1">
           <IconButton
-            sx={{ color: "#9155fd" }}
             size="small"
             disabled={item.quantity <= 1}
+            onClick={() => handleUpdateCartItem(item?.quantity - 1)}
+            sx={{ color: item.quantity <= 1 ? "grey.300" : "#9155fd" }}
           >
-            <RemoveCircleOutlineIcon
-              fontSize="medium"
-              onClick={() => handleUpdateCartItem(item?.quantity - 1)}
-            />
+            <RemoveIcon fontSize="small" />
           </IconButton>
 
-          <span className="w-10 text-center font-semibold text-gray-700 select-none">
+          <span className="w-8 text-center font-bold text-gray-700 text-sm">
             {item.quantity}
           </span>
-          <IconButton sx={{ color: "#9155fd" }} size="small">
-            <AddCircleOutlineIcon
-              fontSize="medium"
-              onClick={() => handleUpdateCartItem(item?.quantity + 1)}
-            />
+
+          <IconButton
+            size="small"
+            onClick={() => handleUpdateCartItem(item?.quantity + 1)}
+            sx={{ color: "#9155fd" }}
+          >
+            <AddIcon fontSize="small" />
           </IconButton>
         </div>
 
-        <div>
-          <Button
-            sx={{
-              color: "#9155fd",
-              fontWeight: 700,
-              fontSize: "0.85rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.5px",
-              "&:hover": { bgcolor: "transparent", color: "#7c3aed" },
-            }}
-            onClick={() => handleRemoveCartItem()}
-          >
-            Remove
-          </Button>
-        </div>
+        {/* Remove Action */}
+        <Button
+          onClick={handleRemoveCartItem}
+          variant="text"
+          size="small"
+          sx={{
+            color: "#ef4444",
+            fontWeight: 700,
+            textTransform: "none",
+            "&:hover": { bgcolor: "#fef2f2" },
+          }}
+        >
+          REMOVE
+        </Button>
       </div>
     </div>
   );

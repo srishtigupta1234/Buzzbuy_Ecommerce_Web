@@ -5,7 +5,7 @@ export const getCart=()=>async(dispatch)=>{
     dispatch({type:GET_CART_REQUEST})
     try{
         const {data} = await api.get("/api/cart/");
-        console.log("data",data);
+
         dispatch({type:GET_CART_SUCCESS,payload:data})
     }catch(err){
        dispatch({type:GET_CART_FAILURE,payload:err.message})
@@ -17,7 +17,6 @@ export const addItemToCart=(reqData)=>async(dispatch)=>{
     try{
         const {data} = await api.put("/api/cart/add",reqData);
         dispatch({type:ADD_ITEM_TO_CART_SUCCESS,payload:data})
-        console.log("Add item to cart successfuly",reqData);
         
     }catch(err){
        dispatch({type:ADD_ITEM_TO_CART_FAILURE,payload:err.message})

@@ -42,8 +42,6 @@ export const findProducts = (reqData) => async (dispatch) => {
     if (stock != null) params.stock = stock;
 
     const { data } = await api.get("/api/products", { params });
-
-    console.log("products:", data);
     dispatch({ type: FIND_PRODUCT_SUCCESS, payload: data });
   } catch (err) {
     dispatch({
@@ -60,7 +58,6 @@ export const findProductsById = (reqData) => async(dispatch) => {
     const { data } = await api.get(
       `/api/products/id/${reqData.productId}`
     );
-    console.log("reqdata",data);
     
     dispatch({ type: FIND_PRODUCT_BY_ID_SUCCESS, payload: data });
   } catch (err) {

@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
 	        orderItem.setDiscountedPrice(item.getDiscountedPrice());
 	        orderItem.setUserId(item.getUserId());
 
-	        orderItem.setOrder(order);   // 🔥 IMPORTANT
+	        orderItem.setOrder(order);
 	        orderItems.add(orderItem);
 	    }
 
@@ -73,9 +73,10 @@ public class OrderServiceImpl implements OrderService {
 	    order.setDiscount(cart.getDiscount());
 	    order.setTotalItem(cart.getTotalItem());
 
-	    Order savedOrder = orderRepository.save(order); // one save only
-	    savedOrder.setOrderId("ORD-" + savedOrder.getId());
-	    return orderRepository.save(savedOrder);
+	    // 🔥 Generate orderId BEFORE saving
+	    order.setOrderId("ORD-" + System.currentTimeMillis());
+
+	    return orderRepository.save(order); // ✅ only ONE save
 	}
 	@Override
 	public Order findOrderById(Long orderId) throws OrderException {

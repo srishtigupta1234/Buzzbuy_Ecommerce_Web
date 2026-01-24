@@ -13,7 +13,7 @@ import {
   LOGOUT,
 } from "./ActionType";
 
-/* -------------------- REGISTER -------------------- */
+
 
 const registerRequest = () => ({ type: REGISTER_REQUEST });
 const registerSuccess = (user) => ({
@@ -34,7 +34,6 @@ export const register = (userData) => async (dispatch) => {
     );
 
     const user = response.data;
-    console.log(user);
     
     if (user.jwt) {
       localStorage.setItem("jwt", user.jwt);
@@ -46,12 +45,11 @@ export const register = (userData) => async (dispatch) => {
       alert(err.response.data.message || "This email is already registered.");
     }
 
-    console.error("Register error:", err);
+   
     dispatch(registerFailure(err.response?.data?.message || err.message));
   }
 };
 
-/* -------------------- LOGIN -------------------- */
 
 const loginRequest = () => ({ type: LOGIN_REQUEST });
 const loginSuccess = (user) => ({
@@ -72,8 +70,7 @@ export const login = (userData) => async (dispatch) => {
     );
 
     const user = response.data;
-        console.log(user);
-
+      
     if (user.jwt) {
       localStorage.setItem("jwt", user.jwt);
     }
@@ -84,7 +81,7 @@ export const login = (userData) => async (dispatch) => {
   }
 };
 
-/* -------------------- GET USER -------------------- */
+
 
 const getUserRequest = () => ({ type: GET_USER_REQUEST });
 const getUserSuccess = (user) => ({
@@ -99,7 +96,7 @@ const getUserFailure = (error) => ({
 export const getUser = (jwt) => async (dispatch) => {
   dispatch(getUserRequest());
 
-  const token = localStorage.getItem("jwt"); // 🔑 get fresh token
+  const token = localStorage.getItem("jwt"); 
 
   try {
     const response = await axios.get(
@@ -117,7 +114,7 @@ export const getUser = (jwt) => async (dispatch) => {
   }
 };
 
-/* -------------------- LOGOUT -------------------- */
+
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("jwt");

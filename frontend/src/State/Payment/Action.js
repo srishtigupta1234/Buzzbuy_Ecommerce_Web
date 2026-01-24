@@ -7,8 +7,7 @@ export const createPayment = (orderId) => async (dispatch) => {
   try {
     const { data } = await api.post(`/api/payments/${orderId}`);
 
-    console.log("Payment API response:", data);
-
+   
     if (data?.payment_link_url) {
       window.location.assign(data.payment_link_url); // more reliable
     } else {
@@ -44,7 +43,6 @@ export const updatePayment = (reqData) => async (dispatch) => {
       payload: data,
     });
 
-    console.log("update payment - ", data);
 
   } catch (error) {
     dispatch({
