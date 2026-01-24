@@ -14,6 +14,7 @@ import navigation from "./navigationData";
 import AuthModal from "../../Auth/AuthModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, logout } from "../../../State/Auth/Action";
+import { getCart } from "../../../State/Cart/Action";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -29,6 +30,8 @@ export default function Navigation() {
   const dispatch = useDispatch();
   const location = useLocation();
   const auth = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
+
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -67,6 +70,9 @@ export default function Navigation() {
     dispatch(logout());
     handleCloseUserMenu();
   };
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
   return (
     <div className="bg-white pb-10">
       {/* Mobile menu */}
@@ -118,7 +124,7 @@ export default function Navigation() {
                               selected
                                 ? "border-indigo-600 text-indigo-600"
                                 : "border-transparent text-gray-900",
-                              "flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium border-none"
+                              "flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium border-none",
                             )
                           }
                         >
@@ -157,10 +163,7 @@ export default function Navigation() {
                                 />
                                 {item.name}
                               </a>
-                              <p aria-hidden="true" className="mt-1">
-                                
-                                
-                              </p>
+                              <p aria-hidden="true" className="mt-1"></p>
                             </div>
                           ))}
                         </div>
@@ -272,7 +275,7 @@ export default function Navigation() {
                                 open
                                   ? "border-indigo-600 text-indigo-600"
                                   : "border-transparent text-gray-700 hover:text-gray-800",
-                                "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                                "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out",
                               )}
                             >
                               {category.name}
@@ -356,7 +359,7 @@ export default function Navigation() {
                                                       category,
                                                       section,
                                                       item,
-                                                      close
+                                                      close,
                                                     )
                                                   }
                                                   className="cursor-pointer hover:text-gray-800"
@@ -402,7 +405,7 @@ export default function Navigation() {
                         aria-expanded={open ? "true" : undefined}
                         onClick={handleUserClick}
                         sx={{
-                          bgcolor:"#4436ce",
+                          bgcolor: "#4436ce",
                           color: "white",
                           cursor: "pointer",
                         }}
@@ -459,14 +462,18 @@ export default function Navigation() {
                 </div>
 
                 {/* Cart */}
+                {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <Button className="group -m-2 flex items-center p-2">
+                  <Button
+                    className="group -m-2 flex items-center p-2"
+                    onClick={() => navigate("/cart")} // navigate to cart page
+                  >
                     <ShoppingBagIcon
                       className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      2
+                      {cart?.totalItem || 0} {/* dynamic cart count */}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </Button>

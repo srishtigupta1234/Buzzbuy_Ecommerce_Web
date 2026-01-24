@@ -9,7 +9,7 @@ import HomeSectionCard from "../HomeSectionCards/HomeSectionCard";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findProductsById } from "../../../State/Product/Action";
+import { findProducts, findProductsById } from "../../../State/Product/Action";
 import { addItemToCart } from "../../../State/Cart/Action";
 
 export default function ProductDetails() {
@@ -17,13 +17,41 @@ export default function ProductDetails() {
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
-  const { product } = useSelector((store) => store.products); // assuming your reducer key is 'products'
+  const { product, products } = useSelector((store) => store.products);
 
+  const productList = Array.isArray(products)
+    ? products
+    : Array.isArray(products?.content)
+      ? products.content
+      : [];
+
+  // 1️⃣ Fetch product by ID
   useEffect(() => {
     if (params.productId) {
       dispatch(findProductsById({ productId: params.productId }));
     }
   }, [params.productId, dispatch]);
+
+  // 2️⃣ Fetch similar products AFTER product loads
+  useEffect(() => {
+    const categoryName = product?.category?.name;
+
+    if (categoryName) {
+      dispatch(
+        findProducts({
+          category: categoryName,
+          pageNumber: 0,
+          pageSize: 8,
+        }),
+      );
+    }
+    console.log(categoryName);
+  }, [product?.category?.name, dispatch]);
+
+  const similarProducts =
+    product && productList.length
+      ? productList.filter((item) => item.id !== product.id)
+      : [];
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -103,10 +131,10 @@ export default function ProductDetails() {
 
             <div className="mt-4 flex items-center gap-4">
               <span className="text-2xl font-bold">
-                ${product.discountedPrice}
+                ₹{product.discountedPrice}
               </span>
               <span className="line-through text-gray-400">
-                ${product.price}
+                ₹{product.price}
               </span>
               <span className="text-green-600 font-semibold">
                 {product.discountPercent}% Off
@@ -238,10 +266,15 @@ export default function ProductDetails() {
         {/* Similar Products */}
         <section className="pt-10">
           <h1 className="py-5 text-xl font-bold">Similar Products</h1>
-          <div className="flex flex-wrap space-y-6">
-            {kurta.map((item) => (
-              <HomeSectionCard key={item.id} product={item} />
-            ))}
+
+          <div className="flex flex-wrap gap-6">
+            {similarProducts.length > 0 ? (
+              similarProducts.map((item) => (
+                <HomeSectionCard key={item.id} product={item} />
+              ))
+            ) : (
+              <p className="text-gray-500">No similar products found.</p>
+            )}
           </div>
         </section>
       </div>
