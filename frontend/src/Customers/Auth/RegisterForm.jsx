@@ -28,7 +28,6 @@ const auth = useSelector(state => state.auth);
       password: data.get("password"),
     };
     dispatch(register(user));
-    console.log(user);
   };
 
   return (
