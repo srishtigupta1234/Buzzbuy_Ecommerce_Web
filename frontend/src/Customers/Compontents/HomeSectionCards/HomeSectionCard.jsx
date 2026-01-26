@@ -6,7 +6,7 @@ const HomeSectionCard = ({ product }) => {
 
   return (
     <div
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={() => navigate(`/products`)}
       className="cursor-pointer flex flex-col items-center bg-white rounded-lg shadow-md overflow-hidden w-60  border border-gray-200 hover:shadow-xl transition-all duration-300"
     >
       {/* 1. w-[15rem]: Narrower width makes it look like a proper product card.

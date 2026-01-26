@@ -47,7 +47,7 @@ public class Applicationconfig {
 
         configuration.setAllowedOrigins(Arrays.asList(
         	    "http://localhost:5173",
-        	    "http://localhost:3000",
+        	    "https://buzzbuyecommerce.vercel.app",
         	    "http://localhost:4200"
         	));
         configuration.setAllowedMethods(

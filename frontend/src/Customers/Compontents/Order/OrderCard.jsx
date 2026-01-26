@@ -62,7 +62,7 @@ const OrderCard = ({ order }) => {
           <Grid item xs={6} sm={2} className="text-left sm:text-center">
              <p className="text-xs text-gray-400 font-medium sm:hidden">Price</p> {/* Mobile Label */}
             <p className="font-bold text-gray-800 text-lg">
-              ${item.discountedPrice}
+              ₹{item.discountedPrice}
             </p>
           </Grid>
 
@@ -97,7 +97,7 @@ const OrderCard = ({ order }) => {
       <div className="pt-4 mt-2 border-t border-gray-100 flex justify-end items-center gap-3">
         <span className="text-sm font-medium text-gray-500">Order Total</span>
         <span className="text-xl font-bold text-gray-900">
-          ${order.totalDiscountedPrice}
+          ₹{order.totalDiscountedPrice}
         </span>
       </div>
     </div>

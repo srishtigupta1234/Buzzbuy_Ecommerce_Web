@@ -64,7 +64,7 @@ export default navigation = {
             { name: "Shirts", id: "shirt" },
             { name: "Men Jeans", id: "jeans" },
             { name: "Sweaters", id: "sweaters" },
-            { name: "T-Shirts", id: "men_tshirt" },
+            { name: "T-Shirts", id: "shirt" },
             { name: "Jackets", id: "jackets" },
             { name: "Activewear", id: "activewear" },
           ],

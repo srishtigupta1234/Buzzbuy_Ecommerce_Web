@@ -111,7 +111,7 @@ const OrderDetail = () => {
                 {/* Price & Actions */}
                 <Grid item xs={12} sm={4} className="flex flex-col sm:items-end gap-3 mt-4 sm:mt-0">
                   <p className="font-bold text-xl text-gray-900">
-                    ${item.discountedPrice}
+                    ₹{item.discountedPrice}
                   </p>
                   
                   {/* Rate Button */}
@@ -133,7 +133,7 @@ const OrderDetail = () => {
         <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="text-center sm:text-left">
              <p className="text-gray-500 text-sm uppercase font-bold tracking-wide">Total Amount</p>
-             <p className="font-bold text-2xl text-gray-900">${order.totalDiscountedPrice}</p>
+             <p className="font-bold text-2xl text-gray-900">₹{order.totalDiscountedPrice}</p>
           </div>
 
           <Button
